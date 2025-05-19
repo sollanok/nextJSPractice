@@ -54,14 +54,14 @@ const Header = () => {
                             href={href} 
                             onClick={() => setSelected(href)}
                             className={clsx(
-                                "relative flex justify-items-center text-xl text-black hover:text-blue-600 font-bold"
+                                "relative flex justify-items-center text-xl text-black hover:text-[#8d7ad6] transition-colors font-bold"
                             )}
                         >
                             {label}
                             {selected === href && pathname !== "/" && (
                                 <motion.div
                                     layoutId="underline"
-                                    className="absolute left-0 bottom-0 h-[2px] bg-blue-600 w-full"
+                                    className="absolute left-0 bottom-0 h-[3px] bg-[#8d7ad6] w-full"
                                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                                 />
                             )}
