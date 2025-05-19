@@ -3,6 +3,7 @@
 import { getPopularMovies } from "@/services/movies/getPopularMovies";
 import React, { useEffect, useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
+import Loading from "@/components/Loading/Loading";
 
 const PopularClientPage = () => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ const PopularClientPage = () => {
   useEffect(() => {
     const fetchPopularMovies = async () => {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulación de retraso de carga
+      //await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulación de retraso de carga
       try {
         const data = await getPopularMovies();
         setMovies(data?.results);
@@ -25,9 +26,9 @@ const PopularClientPage = () => {
   }, []);
   
   return (
-    <div>
-      <h3 className="text-3xl font-bold mb-6">Películas Populares</h3>
-      {loading && <h5 className="text-lg text-gray-500">Cargando...</h5>}
+    <div className="px-8 mt-20 mb-20">
+      <h3 className="text-3xl text-white font-bold mb-6">Películas Populares</h3>
+      {loading && <Loading />}
       
       <MovieList movies={movies} />
     </div>

@@ -3,6 +3,7 @@
 import { getNowPlayingMovies } from "@/services/movies/getNowPlayingMovies";
 import React, { useEffect, useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
+import Loading from "@/components/Loading/Loading";
 
 const NowPlaying = () => {
   const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ const NowPlaying = () => {
   useEffect(() => {
     const fetchNowPlayingMovies = async () => {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulación de retraso
+      //await new Promise((resolve) => setTimeout(resolve, 2000));
       try {
         const data = await getNowPlayingMovies();
         setMovies(data?.results);
@@ -25,9 +26,9 @@ const NowPlaying = () => {
   }, []);
   
   return (
-    <div>
-      <h3 className="text-3xl font-bold mb-6">Películas en Cartelera</h3>
-      {loading && <h5 className="text-lg text-gray-500">Cargando...</h5>}
+    <div className="px-8 mt-20 mb-20">
+      <h3 className="text-3xl text-amber-50 font-bold mb-6">Películas en Cartelera</h3>
+      {loading && <Loading />}
       
       <MovieList movies={movies} />
     </div>
