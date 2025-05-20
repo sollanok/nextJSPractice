@@ -8,6 +8,8 @@ import { useState } from "react";
 import Image from "next/image";
 
 const links = [
+    { href: '/clickable-crash', label: 'Click on Crash' },
+    { href: '/boopeable-jaeger', label: 'Boop Jaeger' },
     { href: '/popular', label: 'Popular' },
     { href: '/now-playing', label: 'Now Playing' },
     { href: '/top-rated', label: 'Top Rated' },
@@ -36,7 +38,7 @@ const Header = () => {
                 transition={{ duration: 1, ease: "easeInOut" }}
             >
                 <Image 
-                    src="/rotatingJaeger.png" 
+                    src="/RotatingJaeger.png" 
                     alt="Jaeger Logo"
                     width={50} 
                     height={50} 
