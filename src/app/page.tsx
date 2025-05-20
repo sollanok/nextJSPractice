@@ -24,7 +24,7 @@ export default function Home() {
   const [upcomingMovies, setUpcomingMovies] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [fade, setFade] = useState(false);
+  const [setFade] = useState(false);
 
   useEffect(() => {
     const fetchMovies = async () => {

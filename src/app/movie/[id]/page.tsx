@@ -13,18 +13,17 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Link from "next/link";
 import MovieCard from "@/components/MovieCard/MovieCard";
 import { getMovieRecommendations } from "@/services/movies/getRecommendedMovies";
+import { IMovieCard } from "@/types/IMovieCard";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
-  const searchParams = useSearchParams();
-  const from = searchParams.get("from");
 
   const [isFavorite, setIsFavorite] = useState(false);
   const { guestSessionId } = useGuestSession();
 
   const [recommendedMovies, setRecommendedMovies] = useState([]);
 
-  const [movie, setMovie] = useState<any>(null);
+  const [movie, setMovie] = useState<IMovieCard | null>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,9 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import MovieCard from "../MovieCard/MovieCard";
+import { IMovieDetail } from "@/types/MovieDetail";
 
 interface MovieListProps {
-  movies: any[];
+  movies: IMovieDetail[];
 }
 
 const MovieList: React.FC<MovieListProps> = ({ movies }) => {
