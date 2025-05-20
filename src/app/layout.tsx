@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Head from "next/head";
 import Header from "@/components/Header/Header";
+import { GuestSessionProvider } from "@/providers/GuestSessionContext";
 
 export const metadata: Metadata = {
   title: "Movies App",
@@ -15,10 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}>
+      <body className={`antialiased`}>
+        <GuestSessionProvider>
           <Header />
-          {children}</body>
+         {children}
+        </GuestSessionProvider>
+      </body>
     </html>
   );
 }

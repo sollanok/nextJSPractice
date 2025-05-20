@@ -4,18 +4,21 @@ import { getTopRatedMovies } from "@/services/movies/getTopRatedMovies";
 import React, { useEffect, useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
 import Loading from "@/components/Loading/Loading";
+import Pagination from "@/components/Pagination/Pagination";
 
 const TopRated = () => {
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchTopRatedMovies = async () => {
       setLoading(true);
-      //await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulación de retraso
       try {
-        const data = await getTopRatedMovies();
+        const data = await getTopRatedMovies(currentPage);
         setMovies(data?.results);
+        setTotalPages(data?.total_pages);
       } catch (err) {
         console.error("Error loading top rated movies:", err);
       }
@@ -23,14 +26,20 @@ const TopRated = () => {
     };
 
     fetchTopRatedMovies();
-  }, []);
-  
+  }, [currentPage]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
   return (
     <div className="px-8 mt-20 mb-20">
-      <h3 className="text-3xl text-amber-50 font-bold mb-6">Películas Mejor Calificadas</h3>
+      <h3 className="text-3xl font-bold mb-6">Best Rated Movies</h3>
       {loading && <Loading />}
-      
+
       <MovieList movies={movies} />
+
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
     </div>
   );
 };

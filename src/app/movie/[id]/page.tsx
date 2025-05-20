@@ -6,11 +6,17 @@ import { getMovieById } from "@/services/movies/getMovieById";
 import api from "@/services/api"; 
 import { motion } from "framer-motion";
 import Loading from "@/components/Loading/Loading";
+import { markAsFavorite } from "@/services/accounts/markAsFavorite";
+import { useGuestSession } from "@/providers/GuestSessionContext";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
+
+  const [isFavorite, setIsFavorite] = useState(false);
+  const { guestSessionId } = useGuestSession();
 
   const [movie, setMovie] = useState<any>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
@@ -43,11 +49,44 @@ const MovieDetailPage = () => {
 
       setTimeout(() => {
         setLoading(false);
-      }, 1500);
+      }, 1000);
     };
 
     fetchMovie();
   }, [id]);
+
+  // Verificar si está en favoritos (localStorage)
+  useEffect(() => {
+    if (!id || typeof id !== "string") return;
+    const storedFavorites = localStorage.getItem("favoriteMovieIds");
+    const favoriteIds: number[] = storedFavorites
+    ? JSON.parse(storedFavorites)
+    : [];
+    setIsFavorite(favoriteIds.includes(Number(id)));
+  }, [id]);
+  // Marcar o desmarcar como favorito
+  
+  const handleToggleFavorite = async () => {
+    if (!guestSessionId || !movie) return;
+    const newFavoriteState = !isFavorite;
+    try {
+      await markAsFavorite(movie.id, newFavoriteState, guestSessionId);
+      setIsFavorite(newFavoriteState);
+      const storedFavorites = localStorage.getItem("favoriteMovieIds");
+      const favoriteIds: number[] = storedFavorites
+      ? JSON.parse(storedFavorites)
+      : [];
+      const updatedFavorites = newFavoriteState
+      ? [...new Set([...favoriteIds, movie.id])]
+      : favoriteIds.filter((id) => id !== movie.id);
+      localStorage.setItem(
+        "favoriteMovieIds",
+        JSON.stringify(updatedFavorites)
+      );
+    } catch (error) {
+      console.error("Failed to update favorite:", error);
+    }
+};
 
   if (loading) {
     return <Loading />;
@@ -92,11 +131,31 @@ const MovieDetailPage = () => {
           </motion.h1>
           <p className="text-lg">{movie.release_date.split("-")[0]}</p>
           <p className="text-gray-300 mt-2">{movie.overview}</p>
-          <div className="mt-4 flex items-center justify-center">
-            <span className="bg-yellow-500 text-black px-3 py-1 rounded-full font-bold">
-              ⭐ {movie.vote_average.toFixed(1)}
-            </span>
-          </div>
+          <div className="mt-4 flex items-center justify-between w-full">
+  {/* Favorite button on the left */}
+  <motion.button
+    onClick={handleToggleFavorite}
+    className="text-3xl flex items-center justify-center"
+    whileTap={{ scale: 0.8 }}
+  >
+    <motion.div
+      initial={{ scale: 1, opacity: 0.5 }}
+      animate={{ scale: isFavorite ? 1.2 : 1, opacity: isFavorite ? 1 : 0.5 }}
+      transition={{ duration: 0.3 }}
+    >
+      {isFavorite ? (
+        <AiFillHeart className="text-red-500" />
+      ) : (
+        <AiOutlineHeart className="text-red-500" />
+      )}
+    </motion.div>
+  </motion.button>
+
+  {/* Rating on the right */}
+  <span className="bg-yellow-500 text-black px-3 py-1 rounded-full font-bold">
+    ⭐ {movie.vote_average.toFixed(1)}
+  </span>
+</div>
         </div>
 
         {trailerKey && (

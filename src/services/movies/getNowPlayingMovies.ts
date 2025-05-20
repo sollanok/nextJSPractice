@@ -1,15 +1,12 @@
 import api from "../api";
 
-export const getNowPlayingMovies = async () => {
-  let res: any;
-  const endpoint = "/movie/now_playing";
-  await api
-    .get(endpoint)
-    .then((d) => {
-      res = d.data;
-    })
-    .catch((err) => {
-      res = err.response;
-    });
-  return res;
+export const getNowPlayingMovies = async (page = 1) => {
+  try {
+    const endpoint = `/movie/now_playing?page=${page}`;
+    const response = await api.get(endpoint);
+    return response.data;
+  } catch (err) {
+    console.error("Error fetching now playing movies:", err);
+    return err.response;
+  }
 };
