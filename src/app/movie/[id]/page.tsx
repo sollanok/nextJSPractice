@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { getMovieById } from "@/services/movies/getMovieById";
 import api from "@/services/api"; 
 import { motion } from "framer-motion";
@@ -13,7 +13,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import Link from "next/link";
 import MovieCard from "@/components/MovieCard/MovieCard";
 import { getMovieRecommendations } from "@/services/movies/getRecommendedMovies";
-import { IMovieCard } from "@/types/IMovieCard";
+import { IMovieDetail } from "@/types/MovieDetail";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
@@ -23,7 +23,7 @@ const MovieDetailPage = () => {
 
   const [recommendedMovies, setRecommendedMovies] = useState([]);
 
-  const [movie, setMovie] = useState<IMovieCard | null>(null);
+  const [movie, setMovie] = useState<IMovieDetail | null>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +41,7 @@ const MovieDetailPage = () => {
         
         const { data: trailerData } = await api.get(`/movie/${id}/videos`);
         if (trailerData?.results?.length > 0) {
-          const trailer = trailerData.results.find(video => video.type === "Trailer");
+          const trailer = trailerData.results.find((video: { type: string; }) => video.type === "Trailer");
           setTrailerKey(trailer ? trailer.key : null);
          } else {
           setTrailerKey(null);
