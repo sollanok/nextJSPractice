@@ -21,7 +21,7 @@ const MovieDetailPage = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const { guestSessionId } = useGuestSession();
 
-  const [recommendedMovies, setRecommendedMovies] = useState([]);
+  const [recommendedMovies, setRecommendedMovies] = useState<Array<IMovieDetail> | null>(null);
 
   const [movie, setMovie] = useState<IMovieDetail | null>(null);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
@@ -141,7 +141,7 @@ const MovieDetailPage = () => {
           >
             {movie.title}
           </motion.h1>
-          <p className="text-lg">{movie.release_date.split("-")[0]}</p>
+          <p className="text-lg">{new Date(movie.release_date).toISOString().split("T")[0]}</p>
           <p className="text-gray-300 mt-2">{movie.overview}</p>
           <div className="mt-4 flex items-center justify-between w-full">
           <motion.button
@@ -191,7 +191,7 @@ const MovieDetailPage = () => {
         className="w-full max-w-4xl mx-auto"
       >
         <CarouselContent>
-          {recommendedMovies.map((movie) => (
+          {recommendedMovies?.map((movie) => (
             <CarouselItem key={movie.id} className="md:basis-1/2 lg:basis-1/3">
               <div className="p-1">
                 <Link 

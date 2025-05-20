@@ -15,16 +15,18 @@ import {
 } from "@/components/ui/carousel"
 
 import MovieCard from "@/components/MovieCard/MovieCard";
+import { IMovieDetail } from "@/types/MovieDetail";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 export default function Home() {
   const [backgrounds, setBackgrounds] = useState([]);
   const [titles, setTitles] = useState([]);
-  const [upcomingMovies, setUpcomingMovies] = useState([]);
-  const [trendingMovies, setTrendingMovies] = useState([]);
+  const [upcomingMovies, setUpcomingMovies] = useState<IMovieDetail[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<IMovieDetail[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [setFade] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [fade, setFade] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -32,8 +34,8 @@ export default function Home() {
         const popularData = await getPopularMovies();
         if (!popularData?.results || popularData.results.length === 0) return;
 
-        const backdrops = popularData.results.map((movie) => `${IMAGE_BASE_URL}${movie.backdrop_path}`);
-        const movieTitles = popularData.results.map((movie) => movie.title);
+        const backdrops = popularData.results.map((movie: IMovieDetail) => `${IMAGE_BASE_URL}${movie.backdrop_path}`);
+        const movieTitles = popularData.results.map((movie: IMovieDetail) => movie.title);
         setBackgrounds(backdrops);
         setTitles(movieTitles);
 

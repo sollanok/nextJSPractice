@@ -7,6 +7,6 @@ export const getTopRatedMovies = async (page = 1) => {
     return response.data;
   } catch (err) {
     console.error("Error fetching top-rated movies:", err);
-    return err.response;
+    return err;
   }
 };

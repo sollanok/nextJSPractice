@@ -4,12 +4,12 @@ import MovieList from "@/components/MovieList/MovieList";
 import { getFavoriteMovies } from "@/services/accounts/getFavoriteMovies";
 import { useGuestSession } from "@/providers/GuestSessionContext";
 import Loading from "@/components/Loading/Loading"
-import { IMovieCard } from "@/types/IMovieCard";
+import { IMovieDetail } from "@/types/MovieDetail";
 
 const MyFavoritesPage = () => {
   const { guestSessionId } = useGuestSession();
   const [loading, setLoading] = useState<boolean>(false);
-  const [movies, setMovies] = useState<IMovieCard[]>([]);
+  const [movies, setMovies] = useState<IMovieDetail[]>([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {

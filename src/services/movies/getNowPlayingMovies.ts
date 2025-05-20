@@ -7,6 +7,6 @@ export const getNowPlayingMovies = async (page = 1) => {
     return response.data;
   } catch (err) {
     console.error("Error fetching now playing movies:", err);
-    return err.response;
+    return err;
   }
 };
